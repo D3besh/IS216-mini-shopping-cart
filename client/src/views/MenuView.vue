@@ -30,7 +30,23 @@ onMounted( async () => {
 
 // TODO: Fetch items for the currently selected category
 async function getItems() {
-    // Add code
+    // Add code
+
+    let url = "http://127.0.0.1:3000/items"
+
+    try {
+        let response = await axios.get(url, {
+            params : {
+            category : selected_category.value
+            }
+        } )
+
+        items.value = response.data
+        console.log(items.value)
+    } catch(e) {
+        console.log(e.message)
+    }
+
 }
 
 // Add selected items to cart
@@ -61,9 +77,9 @@ function doAddToCart(itemsToAdd) {
   
     <!-- TODO: Category selection dropdown -->
     <label for="categories">Categories</label>
-    <select class="form-control" id="categories" v-model="selected_category">
+    <select class="form-control" id="categories" v-model="selected_category" v-on:change="get">
         <option v-for="v in categories">
-            
+
         </option>
 
     </select>
