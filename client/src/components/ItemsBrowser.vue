@@ -1,7 +1,7 @@
 <script setup>
 
 // TODO: Declare props (input)
-
+const props = defineProps(['items'])
 
 // TODO: Declare Emits (output) 
 // an 'addcart' event to notify the parent component when items are added
@@ -29,16 +29,17 @@ function doClick() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td> item name </td>
-                        <td>$ item price </td>
+                    <tr v-for="item in items">
+                        <td> {{ item.name }} </td>
+                        <td>$ {{ item.price }} </td>
                         <td>
                             <!-- Input for selecting item quantity -->
-                            <input type="number" min="0" style="width:50px;">
+                            <input type="number" min="0" style="width:50px;"
+                            v-model="item.quantity">
                         </td>
                         <td>
                             <!-- Display subtotal for the item -->
-                            $ subtotal
+                            $ {{ item.price * item.quantity }}
                         </td>
                     </tr>
                 </tbody>

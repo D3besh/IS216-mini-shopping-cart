@@ -23,29 +23,40 @@ onMounted( async () => {
 
         console.log(response.data)
 
-    } catch (e) {
+        categories.value = response.data
+
+        getItems()
+
+    } catch(e) {
+        // to display the error message when there is a connection error
         console.log(e.message)
     }
-})
+} ) 
+
 
 // TODO: Fetch items for the currently selected category
 async function getItems() {
-    // Add code
+    // Add code
 
-    let url = "http://127.0.0.1:3000/items"
+    let url = "http://127.0.0.1:3000/items"
 
-    try {
-        let response = await axios.get(url, {
-            params : {
-            category : selected_category.value
-            }
-        } )
+    try {
+        let response = await axios.get(url, {
+            params : {
+                category : selected_category.value
+            } 
+        } )
 
-        items.value = response.data
-        console.log(items.value)
-    } catch(e) {
-        console.log(e.message)
-    }
+        items.value = response.data
+        console.log(items.value)
+
+        for(let item of items.value) {
+            item.quantity = 0
+        }
+
+    } catch(e) {
+        console.log(e.message)
+    }
 
 }
 
@@ -77,13 +88,9 @@ function doAddToCart(itemsToAdd) {
   
     <!-- TODO: Category selection dropdown -->
     <label for="categories">Categories</label>
-    <select class="form-control" id="categories" v-model="selected_category" v-on:change="get">
-        <option v-for="v in categories">
-
-        </option>
-
+    <select class="form-control" id="categories" v-model="selected_category" v-on:change="getItems" >
+        <option v-for="v in categories" > {{ v }} </option>
     </select>
-        
     <br>
 
 
@@ -91,9 +98,11 @@ function doAddToCart(itemsToAdd) {
         <div class="row p-3">
             <div class='col-md-6 text-center'>
                 <!-- TODO: Show Items using ItemsBrowser-->
-                <button>
-                    Add to Cart
-                </button>
+                 <!-- <img src="/favicon.ico" v-bind:width="someRef"> -->
+
+                <ItemsBrowser v-bind:items="items"  ></ItemsBrowser>
+
+               
             </div>
         </div>
 
