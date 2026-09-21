@@ -14,7 +14,19 @@ const cartItems = ref([]);
 const STORAGE_KEY = "cart"
 
 // TODO: Fetch categories when the component is created
+onMounted( async () => {
+    let url = "http://127.0.0.1:3000/categories"
 
+    try {
+        // axios code must be inside try/catch block
+        let response = await axios.get(url)
+
+        console.log(response.data)
+
+    } catch (e) {
+        console.log(e.message)
+    }
+})
 
 // TODO: Fetch items for the currently selected category
 async function getItems() {
@@ -49,9 +61,13 @@ function doAddToCart(itemsToAdd) {
   
     <!-- TODO: Category selection dropdown -->
     <label for="categories">Categories</label>
-    <select class="form-control" id="categories" >
-        <option> category </option>
+    <select class="form-control" id="categories" v-model="selected_category">
+        <option v-for="v in categories">
+            
+        </option>
+
     </select>
+        
     <br>
 
 
